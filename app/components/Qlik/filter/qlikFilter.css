@@ -1,0 +1,90 @@
+.container {
+  width: 100%;
+}
+.filterBox {
+  border-radius: 3px;
+  background-color: #ffffff;
+  color: #878d94;
+  display: flex;
+  cursor: pointer;
+  padding: 8px 12px;
+  border: 1px solid #dce0e0;
+  font-size: 12px;
+}
+.selected {
+  background-color: #4a4a4a;
+  color: #ffffff;
+}
+.openBox {
+  border: 3px solid #572df7;
+}
+.fieldName {
+  margin: auto;
+  font-size: 12px;
+}
+.ulContainer {
+  position: relative;
+  z-index: 99;
+}
+.listContainer {
+  border-radius: 2px;
+  box-shadow: 0 2px 3px 0 rgba(71, 70, 71, 0.26);
+  border: 1px solid rgba(71, 70, 71, 0.26);
+  background: #ffffff;
+  position: absolute;
+  left: 0;
+  top: 100%;
+  width: 100%;
+  min-width: 160px;
+  max-width: 160px;
+  padding: 10px 0px;
+  margin: 0px;
+  max-height: 300px;
+}
+.list {
+  list-style-type: none;
+  background: #ffffff;
+  width: 100%;
+  overflow: hidden;
+  padding: 0px 0px 10px 0px;
+  margin: 0px;
+  max-height: 285px;
+  overflow-y: auto;
+}
+.listItem {
+  padding-top: 10px;
+  padding-left: 12px;
+  cursor: pointer;
+  font-size: 12px;
+  display: flex;
+  font-weight: normal;
+  flex-direction: row;
+}
+.listItem:hover {
+  color: #572df7;
+}
+.clearText {
+  text-transform: uppercase;
+  font-weight: normal;
+  font-size: 10px;
+  color: #c2c9d1;
+  padding-left: 20px;
+  cursor: pointer;
+}
+.clearText:hover {
+  color: #572df7;
+  opacity: 0.6;
+}
+.checkBox {
+  padding-right: 10px;
+  padding-left: 10px;
+  margin: auto 0px;
+  height: 12px;
+  width: 12px;
+}
+.loading {
+  opacity: 0.2;
+}
+.excludedItem {
+  opacity: 0.2;
+}

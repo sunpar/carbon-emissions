@@ -1,0 +1,33 @@
+.sideBar {
+  height: 100%;
+  display: flex;
+  flex-flow: column;
+  overflow-y: auto;
+  width: 80px;
+  background-color: #272936;
+  transition: width;
+  transition-duration: 300;
+  transition-timing-function: ease;
+  flex-shrink: 0;
+}
+.sideItem {
+  display: flex;
+  flex-flow: row;
+  cursor: auto;
+}
+.logoText {
+  display: flex;
+  font-size: 14px;
+  color: white;
+  margin: 0px auto;
+}
+.logo {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  margin: 5px auto 40px auto;
+}
+.UNLogo {
+  width: 68px;
+  height: auto;
+}

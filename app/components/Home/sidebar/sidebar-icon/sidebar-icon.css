@@ -1,0 +1,17 @@
+.icon {
+  height: 16px;
+  margin-bottom: 40px;
+  width: 100%;
+  display: flex;
+  cursor: pointer;
+  opacity: 0.2;
+  background-color: inherit;
+}
+.iconActive {
+  border-left: 3px solid #fdbf29;
+  opacity: 1;
+}
+.iconWrapper {
+  margin: auto;
+  background-image: inherit;
+}

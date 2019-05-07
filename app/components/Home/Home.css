@@ -1,0 +1,23 @@
+.container {
+  display: flex;
+  flex-direction: row;
+  height: 100%;
+}
+
+.contentContainer {
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+}
+
+.headerContainer {
+  display: flex;
+  flex-direction: column;
+  flex-shrink: 0;
+}
+
+.mainContainer {
+  display: flex;
+  flex-direction: column;
+  background-color: #ffffff;
+}
