@@ -28,9 +28,11 @@ const KPIComponent = ({ title, primaryKPI, secondaryKPI, sparkData }) => {
       </table>
       <div className={styles.barChart} ref={chartDiv}>
         {secondaryKPI ? (
-          <svg className={styles.chartSVG}>
-            <PartWholeBar percent={percent} width={width} />
-          </svg>
+          <>
+            <svg className={styles.chartSVG}>
+              <PartWholeBar percent={percent} width={width} />
+            </svg>
+          </>
         ) : (
           <SparkLine data={sparkData} />
         )}
