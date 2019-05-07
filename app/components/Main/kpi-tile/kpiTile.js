@@ -14,9 +14,11 @@ const KPITile = () => {
 
   const { layout } = useGenericObjectData(topLineMetrics, app$);
   if (layout) {
+    const cube = layout.qHyperCube.qDataPages[0].qMatrix;
     const KPIs = [
       {
         title: 'Carbon Emissions (kg)',
+        sparkline: cube.map(row => row[1].qNum),
         primaryKPI: {
           label: '2017 Total',
           value: numberWithCommas(layout.totalCarbon.toFixed(0)),
@@ -33,6 +35,7 @@ const KPITile = () => {
       },
       {
         title: 'Itineraries',
+        sparkline: cube.map(row => row[2].qNum),
         primaryKPI: {
           label: '2017 Total',
           value: numberWithCommas(layout.totalItineraries.toFixed(0)),
@@ -49,6 +52,7 @@ const KPITile = () => {
       },
       {
         title: 'Flights',
+        sparkline: cube.map(row => row[3].qNum),
         primaryKPI: {
           label: '2017 Total',
           value: numberWithCommas(layout.totalFlights.toFixed(0)),
@@ -65,6 +69,7 @@ const KPITile = () => {
       },
       {
         title: 'Distance (KM)',
+        sparkline: cube.map(row => row[4].qNum),
         primaryKPI: {
           label: '2017 Total',
           value: numberWithCommas(layout.totalKM.toFixed(0)),
@@ -90,6 +95,7 @@ const KPITile = () => {
                 title={kpi.title}
                 primaryKPI={kpi.primaryKPI}
                 secondaryKPI={kpi.secondaryKPI}
+                sparkData={kpi.sparkline}
               />
             </div>
           ))}

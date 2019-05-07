@@ -1,9 +1,10 @@
 import React, { useRef } from 'react';
 import PartWholeBar from '../Part of Whole Bar';
+import SparkLine from '../Sparkline';
 import styles from './kpiComponent.css';
 import useElementSize from '../../../Hooks/useElementSize';
 
-const KPIComponent = ({ title, primaryKPI, secondaryKPI }) => {
+const KPIComponent = ({ title, primaryKPI, secondaryKPI, sparkData }) => {
   const chartDiv = useRef(null);
   const { width } = useElementSize(chartDiv);
   const percent = secondaryKPI.number / primaryKPI.number;
@@ -30,7 +31,9 @@ const KPIComponent = ({ title, primaryKPI, secondaryKPI }) => {
           <svg className={styles.chartSVG}>
             <PartWholeBar percent={percent} width={width} />
           </svg>
-        ) : null}
+        ) : (
+          <SparkLine data={sparkData} />
+        )}
       </div>
     </div>
   );
