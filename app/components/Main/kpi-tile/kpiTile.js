@@ -1,4 +1,4 @@
-import React, { useState, useLayoutEffect, useContext } from 'react';
+import React, { useContext } from 'react';
 
 import useGenericObjectData from '../../../Qlik/Hooks/useGenericObjectData';
 import qlikContext from '../../../Context/qlikContext';
@@ -10,33 +10,24 @@ import KPIComponent from '../../Data Viz/KPI';
 import styles from './kpiTile.css';
 
 const KPITile = () => {
-  const context = useContext(qlikContext);
+  const { app$ } = useContext(qlikContext);
 
-  const primaryKPI = {
-    label: '2017 Total',
-    value: 3655480
-  };
-
-  const secondaryKPI = {
-    label: 'Selection',
-    value: 3655480
-  };
-
-  const { layout } = useGenericObjectData(topLineMetrics, context.app$);
+  const { layout } = useGenericObjectData(topLineMetrics, app$);
   if (layout) {
-    console.log(layout);
     const KPIs = [
       {
         title: 'Carbon Emissions (kg)',
         primaryKPI: {
           label: '2017 Total',
-          value: numberWithCommas(layout.totalCarbon.toFixed(0))
+          value: numberWithCommas(layout.totalCarbon.toFixed(0)),
+          number: layout.totalCarbon
         },
         secondaryKPI:
           layout.totalCarbon !== layout.currentCarbon
             ? {
                 label: 'Selection',
-                value: numberWithCommas(layout.currentCarbon.toFixed(0))
+                value: numberWithCommas(layout.currentCarbon.toFixed(0)),
+                number: layout.currentCarbon
               }
             : false
       },
@@ -44,13 +35,15 @@ const KPITile = () => {
         title: 'Itineraries',
         primaryKPI: {
           label: '2017 Total',
-          value: numberWithCommas(layout.totalItineraries.toFixed(0))
+          value: numberWithCommas(layout.totalItineraries.toFixed(0)),
+          number: layout.totalItineraries
         },
         secondaryKPI:
           layout.totalItineraries !== layout.currentItineraries
             ? {
                 label: 'Selection',
-                value: numberWithCommas(layout.currentItineraries.toFixed(0))
+                value: numberWithCommas(layout.currentItineraries.toFixed(0)),
+                number: layout.currentItineraries
               }
             : false
       },
@@ -58,13 +51,15 @@ const KPITile = () => {
         title: 'Flights',
         primaryKPI: {
           label: '2017 Total',
-          value: numberWithCommas(layout.totalFlights.toFixed(0))
+          value: numberWithCommas(layout.totalFlights.toFixed(0)),
+          number: layout.totalFlights
         },
         secondaryKPI:
           layout.totalFlights !== layout.currentFlights
             ? {
                 label: 'Selection',
-                value: numberWithCommas(layout.currentFlights.toFixed(0))
+                value: numberWithCommas(layout.currentFlights.toFixed(0)),
+                number: layout.currentFlights
               }
             : false
       },
@@ -72,13 +67,15 @@ const KPITile = () => {
         title: 'Distance (KM)',
         primaryKPI: {
           label: '2017 Total',
-          value: numberWithCommas(layout.totalKM.toFixed(0))
+          value: numberWithCommas(layout.totalKM.toFixed(0)),
+          number: layout.totalKM
         },
         secondaryKPI:
           layout.totalKM !== layout.currentKM
             ? {
                 label: 'Selection',
-                value: numberWithCommas(layout.currentKM.toFixed(0))
+                value: numberWithCommas(layout.currentKM.toFixed(0)),
+                number: layout.currentKM
               }
             : false
       }
@@ -87,17 +84,15 @@ const KPITile = () => {
     return (
       <TileComponent title="Top Line Metrics">
         <div className={styles.kpiContainer}>
-          {KPIs.map(kpi => {
-            return (
-              <div key={kpi.title} className={styles.singleKPI}>
-                <KPIComponent
-                  title={kpi.title}
-                  primaryKPI={kpi.primaryKPI}
-                  secondaryKPI={kpi.secondaryKPI}
-                />
-              </div>
-            );
-          })}
+          {KPIs.map(kpi => (
+            <div key={kpi.title} className={styles.singleKPI}>
+              <KPIComponent
+                title={kpi.title}
+                primaryKPI={kpi.primaryKPI}
+                secondaryKPI={kpi.secondaryKPI}
+              />
+            </div>
+          ))}
         </div>
       </TileComponent>
     );

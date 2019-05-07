@@ -36,15 +36,6 @@
     "test-watch": "yarn test --watch"
   },
   "lint-staged": {
-    "*.{js,jsx}": [
-      "cross-env NODE_ENV=development eslint --cache --format=pretty",
-      "prettier --ignore-path .eslintignore --single-quote --write",
-      "git add"
-    ],
-    "{*.json,.{babelrc,eslintrc,prettierrc,stylelintrc}}": [
-      "prettier --ignore-path .eslintignore --parser json --write",
-      "git add"
-    ],
     "*.{css,scss}": [
       "stylelint --ignore-path .eslintignore --syntax scss --fix",
       "prettier --ignore-path .eslintignore --single-quote --write",
@@ -243,6 +234,7 @@
     "@fortawesome/fontawesome-free": "^5.5.0",
     "@material-ui/core": "^3.9.3",
     "@material-ui/icons": "^3.0.2",
+    "d3": "^5.9.2",
     "devtron": "^1.4.0",
     "electron-debug": "^2.0.0",
     "electron-log": "^2.2.17",
@@ -259,7 +251,10 @@
     "redux-thunk": "^2.3.0",
     "rxjs": "^6.5.1",
     "rxq": "^2.0.4",
-    "source-map-support": "^0.5.9"
+    "source-map-support": "^0.5.9",
+    "vega": "^5.3.5",
+    "vega-embed": "^4.0.0",
+    "vega-lite": "^3.2.1"
   },
   "devEngines": {
     "node": ">=7.x",

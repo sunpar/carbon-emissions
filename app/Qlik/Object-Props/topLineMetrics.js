@@ -9,16 +9,16 @@ const topLineMetrics = {
     qValueExpression: `=Sum([CO2 After Offsetting (kg)])`
   },
   totalFlights: {
-    qValueExpression: `=Sum({1} %Legs_RowID)`
+    qValueExpression: `=Count({1} Distinct %Legs_RowID)`
   },
   currentFlights: {
-    qValueExpression: `=Sum(%Legs_RowID)`
+    qValueExpression: `=Count(Distinct %Legs_RowID)`
   },
   totalItineraries: {
-    qValueExpression: `=Sum({1} [%UN Travel Row ID])`
+    qValueExpression: `=Count({1} Distinct [%UN Travel Row ID])`
   },
   currentItineraries: {
-    qValueExpression: `=Sum([%UN Travel Row ID])`
+    qValueExpression: `=Count(Distinct [%UN Travel Row ID])`
   },
   totalKM: {
     qValueExpression: `=Sum({1} [Trip Distance (km)])`
