@@ -1,0 +1,8 @@
+.tileContainer {
+  margin: 0px 25px 25px 25px;
+  padding: 15px 35px 30px 35px;
+  display: flex;
+  background-color: white;
+  flex-grow: 1;
+  flex-direction: column;
+}

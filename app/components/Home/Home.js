@@ -10,6 +10,7 @@ import PageTitleComponent from './page-title/page-title';
 import FilterRowComponent from './filter-row/filterRow';
 
 import MapPage from '../../containers/MapPage';
+import MainPage from '../../containers/MainPage';
 
 type Props = {};
 
@@ -27,6 +28,7 @@ export default class Home extends Component<Props> {
           </div>
           <div className={styles.mainContainer}>
             <Switch>
+              <Route path={routes.MAIN} component={MainPage} />
               <Route path={routes.MAP} component={MapPage} />
             </Switch>
           </div>
