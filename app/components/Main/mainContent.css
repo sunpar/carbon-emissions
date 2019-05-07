@@ -3,3 +3,8 @@
   height: 1000px;
   background-color: #eff0f5;
 }
+
+.kpiContainer {
+  display: flex;
+  flex-direction: row;
+}

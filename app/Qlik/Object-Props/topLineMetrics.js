@@ -14,11 +14,17 @@ const topLineMetrics = {
   currentFlights: {
     qValueExpression: `=Sum(%Legs_RowID)`
   },
-  totalFlights: {
+  totalItineraries: {
     qValueExpression: `=Sum({1} [%UN Travel Row ID])`
   },
-  currentFlights: {
+  currentItineraries: {
     qValueExpression: `=Sum([%UN Travel Row ID])`
+  },
+  totalKM: {
+    qValueExpression: `=Sum({1} [Trip Distance (km)])`
+  },
+  currentKM: {
+    qValueExpression: `=Sum([Trip Distance (km)])`
   }
 };
 

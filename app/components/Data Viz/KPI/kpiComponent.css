@@ -1,0 +1,35 @@
+.kpiContainer {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+}
+
+.kpiTitle {
+  font-size: 14px;
+  font-weight: 500;
+  color: #4a4a4a;
+  text-transform: uppercase;
+  margin-bottom: 7px;
+  text-decoration: underline;
+}
+
+.kpi {
+  border-collapse: collapse;
+  border-spacing: 0;
+  box-sizing: border-box;
+  color: #7a828c;
+  width: 100%;
+}
+
+.KPILabel {
+  font-size: 12px;
+  font-weight: 500;
+  padding: 7px 0;
+}
+
+.KPIValue {
+  font-size: 16px;
+  font-weight: 300;
+  text-align: right;
+  padding: 7px 0
+}

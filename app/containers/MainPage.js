@@ -1,2 +1,2 @@
-import Main from '../components/Main/index';
-export default Main;
+import MainContent from '../components/Main/index';
+export default MainContent;

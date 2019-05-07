@@ -1,0 +1,9 @@
+.kpiContainer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.singleKPI {
+  flex-basis: 175px;
+}
