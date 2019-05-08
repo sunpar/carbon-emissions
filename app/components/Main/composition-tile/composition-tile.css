@@ -1,0 +1,8 @@
+.trendsContainer {
+  display: flex;
+  flex-direction: column;
+}
+
+.tabContainer {
+  margin-bottom: 20px;
+}

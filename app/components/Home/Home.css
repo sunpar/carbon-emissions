@@ -19,5 +19,6 @@
 .mainContainer {
   display: flex;
   flex-direction: column;
-  background-color: #ffffff;
+  background-color: #fff;
+  overflow-y: scroll;
 }

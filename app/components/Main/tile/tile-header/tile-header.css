@@ -2,9 +2,9 @@
   display: flex;
   flex-direction: row;
   justify-content: space-between;
-  border-bottom: 0.5px solid rgba(151,151,151,0.73);
-  padding: 18px 0px 23px 0px;
-  margin-bottom: 30px;
+  border-bottom: 0.5px solid rgba(151, 151, 151, 0.73);
+  padding: 10px 0 5px 0;
+  margin-bottom: 15px;
 }
 .utilityContainer {
   display: flex;
@@ -14,7 +14,7 @@
 }
 .tileTitle {
   font-size: 18px;
-  color: #0F131A;
+  color: #0f131a;
   font-weight: 500;
   letter-spacing: 2px;
   line-height: 18px;
@@ -22,7 +22,7 @@
 }
 .active {
   font-size: 10px;
-  color: #4A4A4A;
+  color: #4a4a4a;
   line-height: 11px;
   font-weight: bold;
   margin-left: 20px;
@@ -32,7 +32,7 @@
 }
 .inactive {
   font-size: 10px;
-  color: #C2C9D1;
+  color: #c2c9d1;
   line-height: 11px;
   font-weight: bold;
   margin-left: 20px;
