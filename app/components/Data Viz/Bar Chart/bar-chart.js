@@ -22,7 +22,6 @@ const LineChart = ({ data }) => {
 
 // the vega spec for the chart
 const _spec = (width, height, data) => {
-  console.log(width, height);
   return {
     $schema: 'https://vega.github.io/schema/vega/v5.json',
     width: width - 100,

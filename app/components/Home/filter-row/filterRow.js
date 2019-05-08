@@ -13,9 +13,10 @@ const filters = [
 const filters2 = [
   { display: 'Class', field: 'Class' },
   { display: 'TPO', field: '[Travel Processing Office]' },
-  { display: 'Travel Type', field: '[Travel Type]' },
   { display: 'Traveler Type', field: '[Traveler Type]' },
-  { display: 'Travel Category', field: '[Travel Category' },
+  { display: 'Persnl Subarea', field: '[Personnel Subarea]' },
+  { display: 'Travel Type', field: '[Travel Type]' },
+  { display: 'Travel Category', field: '[Travel Category]' },
   { display: 'Origin City', field: '[Origin.City]' },
   { display: 'Destination City', field: '[Destination.City]' }
 ];

@@ -90,12 +90,10 @@ const TrendTile = () => {
     ];
 
     const handleChange = (event, newValue) => {
-      console.log(event, newValue);
       setChartNum(newValue);
     };
-    console.log(chartNum);
     return (
-      <TileComponent title="Trends">
+      <TileComponent title="Composition">
         <div className={styles.trendsContainer}>
           <div className={styles.tabContainer}>
             <Tabs value={chartNum} onChange={handleChange}>

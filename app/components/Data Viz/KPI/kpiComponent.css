@@ -24,14 +24,14 @@
 .KPILabel {
   font-size: 12px;
   font-weight: 500;
-  padding: 7px 0;
+  padding: 0 0 7px 0;
 }
 
 .KPIValue {
   font-size: 16px;
   font-weight: 300;
   text-align: right;
-  padding: 7px 0;
+  padding: 0 0 7px 0;
 }
 
 .barChart {
