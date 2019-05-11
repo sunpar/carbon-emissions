@@ -8,17 +8,17 @@ import qlikContext from '../../../Context/qlikContext';
 import flightCO2 from '../../../Qlik/Object-Props/flightCO2';
 import { numberWithCommas } from '../../../utils/numberFunctions';
 import TileComponent from '../tile/tile';
-import BarChart from '../../Data Viz/Bar Chart';
+import Beeswarm from '../../Data Viz/Beeswarm';
 
 import styles from './beeswarm-tile.css';
 
 const BeeSwarmTile = () => {
   const { app$ } = useContext(qlikContext);
-  const { data } = useObjectData(flightCO2, app$);
+  const { handle, data } = useObjectData(flightCO2, app$);
   const [chartNum, setChartNum] = useState(0);
 
   if (data) {
-    console.log(data);
+    console.log(handle, data);
 
     const handleChange = (event, newValue) => {
       setChartNum(newValue);
@@ -34,6 +34,9 @@ const BeeSwarmTile = () => {
               <Tab label="Travel Type" />
               <Tab label="Travel Category" />
             </Tabs>
+          </div>
+          <div className={styles.chartContainer}>
+            <Beeswarm data={data} />
           </div>
         </div>
       </TileComponent>

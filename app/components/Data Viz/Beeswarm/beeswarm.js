@@ -1,15 +1,16 @@
-import React from 'react';
+import React, { useRef } from 'react';
 
-import styles from 'beeswawrm.css';
+import useElementSize from '../../../Hooks/useElementSize';
+import styles from './beeswarm.css';
 
 const BeeSwarm = ({ data }) => {
   const chartContainer = useRef(null);
   const { width, height } = useElementSize(chartContainer);
 
   return (
-    <div className={styles.container} ref={chartContainer}>
+    <svg className={styles.container} ref={chartContainer}>
       hello
-    </div>
+    </svg>
   );
 };
 

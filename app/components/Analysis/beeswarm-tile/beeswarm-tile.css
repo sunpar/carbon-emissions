@@ -6,3 +6,7 @@
 .tabContainer {
   margin-bottom: 20px;
 }
+
+.chartContainer {
+  width: 100%;
+}
