@@ -5,7 +5,7 @@ import Tab from '@material-ui/core/Tab';
 
 import useGenericObjectData from '../../../Qlik/Hooks/useGenericObjectData';
 import qlikContext from '../../../Context/qlikContext';
-import topLineMetrics from '../../../Qlik/Object-Props/topLineMetrics';
+import monthlyTopMetricsProps from '../../../Qlik/Object-Props/monthlyTopMetrics';
 import { numberWithCommas } from '../../../utils/numberFunctions';
 import TileComponent from '../tile/tile';
 import BarChart from '../../Data Viz/Bar Chart';
@@ -15,83 +15,76 @@ import styles from './trend-tile.css';
 const TrendTile = () => {
   const { app$ } = useContext(qlikContext);
   const [chartNum, setChartNum] = useState(0);
-  const { layout } = useGenericObjectData(topLineMetrics, app$);
+  const { layout } = useGenericObjectData(monthlyTopMetricsProps, app$);
   if (layout) {
-    const cube = layout.qHyperCube.qDataPages[0].qMatrix;
+    const cube = layout.monthly.qHyperCube.qDataPages[0].qMatrix;
     const trends = [
       {
         title: 'Carbon Emissions (kg)',
         data: cube.map(row => ({
-          month: row[0].qText,
+          dim: row[0].qText,
           value: row[1].qNum.toFixed(0)
-        })),
-        primaryKPI: {
-          label: '2017 Total',
-          value: numberWithCommas(layout.totalCarbon.toFixed(0)),
-          number: layout.totalCarbon
-        },
-        secondaryKPI: {
-          label: 'Selection',
-          value: numberWithCommas(layout.currentCarbon.toFixed(0)),
-          number: layout.currentCarbon
-        }
+        }))
       },
       {
         title: 'Itineraries',
         data: cube.map(row => ({
-          month: row[0].qText,
+          dim: row[0].qText,
           value: row[2].qNum.toFixed(0)
-        })),
-        primaryKPI: {
-          label: '2017 Total',
-          value: numberWithCommas(layout.totalItineraries.toFixed(0)),
-          number: layout.totalItineraries
-        },
-        secondaryKPI: {
-          label: 'Selection',
-          value: numberWithCommas(layout.currentItineraries.toFixed(0)),
-          number: layout.currentItineraries
-        }
+        }))
       },
       {
         title: 'Flights',
         data: cube.map(row => ({
-          month: row[0].qText,
+          dim: row[0].qText,
           value: row[3].qNum.toFixed(0)
-        })),
-        primaryKPI: {
-          label: '2017 Total',
-          value: numberWithCommas(layout.totalFlights.toFixed(0)),
-          number: layout.totalFlights
-        },
-        secondaryKPI: {
-          label: 'Selection',
-          value: numberWithCommas(layout.currentFlights.toFixed(0)),
-          number: layout.currentFlights
-        }
+        }))
       },
       {
         title: 'Distance (KM)',
         data: cube.map(row => ({
-          month: row[0].qText,
+          dim: row[0].qText,
           value: row[4].qNum.toFixed(0)
-        })),
-        primaryKPI: {
-          label: '2017 Total',
-          value: numberWithCommas(layout.totalKM.toFixed(0)),
-          number: layout.totalKM
-        },
-        secondaryKPI: {
-          label: 'Selection',
-          value: numberWithCommas(layout.currentKM.toFixed(0)),
-          number: layout.currentKM
-        }
+        }))
+      }
+    ];
+
+    const weeklyCube = layout.weekly.qHyperCube.qDataPages[0].qMatrix;
+    const weeklyTrends = [
+      {
+        title: 'Carbon Emissions (kg)',
+        data: weeklyCube.map(row => ({
+          dim: row[0].qText,
+          value: row[1].qNum.toFixed(0)
+        }))
+      },
+      {
+        title: 'Itineraries',
+        data: weeklyCube.map(row => ({
+          dim: row[0].qText,
+          value: row[2].qNum.toFixed(0)
+        }))
+      },
+      {
+        title: 'Flights',
+        data: weeklyCube.map(row => ({
+          dim: row[0].qText,
+          value: row[3].qNum.toFixed(0)
+        }))
+      },
+      {
+        title: 'Distance (KM)',
+        data: weeklyCube.map(row => ({
+          dim: row[0].qText,
+          value: row[4].qNum.toFixed(0)
+        }))
       }
     ];
 
     const handleChange = (event, newValue) => {
       setChartNum(newValue);
     };
+
     return (
       <TileComponent title="Trends">
         <div className={styles.trendsContainer}>
@@ -103,11 +96,19 @@ const TrendTile = () => {
               <Tab label="Distance" />
             </Tabs>
           </div>
-          {
-            <div className={styles.singleTrend}>
-              <BarChart data={trends[chartNum].data} />
-            </div>
-          }
+
+          <div className={styles.singleTrend}>
+            <BarChart
+              data={trends[chartNum].data}
+              selField={'Departure Date.autoCalendar.Month'}
+            />
+          </div>
+          <div className={styles.singleTrend}>
+            <BarChart
+              data={weeklyTrends[chartNum].data}
+              selField={'Departure Date.autoCalendar.Week'}
+            />
+          </div>
         </div>
       </TileComponent>
     );

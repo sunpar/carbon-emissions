@@ -5,19 +5,17 @@ import qlikContext from '../../Context/qlikContext';
 import topLineMetrics from '../../Qlik/Object-Props/topLineMetrics';
 
 import KPITile from './kpi-tile';
-import TrendTile from './trend-tile';
+import BeeSwarmTile from './beeswarm-tile';
 import CompositionTile from './distribution-tile';
 
-import styles from './mainContent.css';
+import styles from './analysis.css';
 
-const MainContent = () => {
+const AnalysisContent = () => {
   return (
     <div className={styles.mainContainer}>
-      <KPITile />
-      <TrendTile />
-      <CompositionTile />
+      <BeeSwarmTile />
     </div>
   );
 };
 
-export default MainContent;
+export default AnalysisContent;

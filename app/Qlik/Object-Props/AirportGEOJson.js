@@ -1,6 +1,6 @@
 const airportGEOProps = {
     qInfo: {
-      qType: "brandObj"
+      qType: "AirportGeoJSon"
     },
     qHyperCubeDef: {
       qInitialDataFetch: [

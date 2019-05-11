@@ -1,4 +1,5 @@
 {
   "MAIN": "/main",
+  "ANALYSIS": "/analysis",
   "MAP": "/map"
 }

@@ -1,6 +1,6 @@
 const topLineMetrics = {
   qInfo: {
-    qType: 'brandObj'
+    qType: 'topMetrics'
   },
   totalCarbon: {
     qValueExpression: `=Sum({1} [CO2 After Offsetting (kg)])`

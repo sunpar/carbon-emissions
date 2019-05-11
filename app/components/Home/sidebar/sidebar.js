@@ -4,6 +4,7 @@ import { withRouter } from 'react-router-dom';
 
 import FiberSmartRecord from '@material-ui/icons/FiberSmartRecord';
 import Map from '@material-ui/icons/Map';
+import BarChart from '@material-ui/icons/BarChart';
 
 import UNLogo from '../../../_assets/UNLogo.gif';
 import SideBarIcon from './sidebar-icon/sidebar-icon';
@@ -18,7 +19,8 @@ const SideBar = ({ history }) => {
   //The icons & icon text that we need in the side panel
   const icons = [
     <FiberSmartRecord style={ICON_STYLE} />,
-    <Map style={ICON_STYLE} />
+    <BarChart style={ICON_STYLE} />,
+    <Map style={ICON_STYLE} />,
   ];
 
   // Which icon is active?
@@ -31,6 +33,9 @@ const SideBar = ({ history }) => {
           history.push('/main');
           break;
         case 1:
+          history.push('/analysis');
+          break;
+        case 2:
           history.push('/map');
           break;
       }

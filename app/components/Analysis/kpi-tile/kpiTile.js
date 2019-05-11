@@ -1,30 +1,24 @@
-import React, { useContext, useState } from 'react';
-
-import Tabs from '@material-ui/core/Tabs';
-import Tab from '@material-ui/core/Tab';
+import React, { useContext } from 'react';
 
 import useGenericObjectData from '../../../Qlik/Hooks/useGenericObjectData';
 import qlikContext from '../../../Context/qlikContext';
 import topLineMetrics from '../../../Qlik/Object-Props/topLineMetrics';
 import { numberWithCommas } from '../../../utils/numberFunctions';
 import TileComponent from '../tile/tile';
-import BarChart from '../../Data Viz/Bar Chart';
+import KPIComponent from '../../Data Viz/KPI';
 
-import styles from './composition-tile.css';
+import styles from './kpiTile.css';
 
-const TrendTile = () => {
+const KPITile = () => {
   const { app$ } = useContext(qlikContext);
-  const [chartNum, setChartNum] = useState(0);
+
   const { layout } = useGenericObjectData(topLineMetrics, app$);
   if (layout) {
     const cube = layout.qHyperCube.qDataPages[0].qMatrix;
-    const trends = [
+    const KPIs = [
       {
         title: 'Carbon Emissions (kg)',
-        data: cube.map(row => ({
-          month: row[0].qText,
-          value: row[1].qNum.toFixed(0)
-        })),
+        sparkline: cube.map(row => row[1].qNum),
         primaryKPI: {
           label: '2017 Total',
           value: numberWithCommas(layout.totalCarbon.toFixed(0)),
@@ -38,10 +32,7 @@ const TrendTile = () => {
       },
       {
         title: 'Itineraries',
-        data: cube.map(row => ({
-          month: row[0].qText,
-          value: row[2].qNum.toFixed(0)
-        })),
+        sparkline: cube.map(row => row[2].qNum),
         primaryKPI: {
           label: '2017 Total',
           value: numberWithCommas(layout.totalItineraries.toFixed(0)),
@@ -55,10 +46,7 @@ const TrendTile = () => {
       },
       {
         title: 'Flights',
-        data: cube.map(row => ({
-          month: row[0].qText,
-          value: row[3].qNum.toFixed(0)
-        })),
+        sparkline: cube.map(row => row[3].qNum),
         primaryKPI: {
           label: '2017 Total',
           value: numberWithCommas(layout.totalFlights.toFixed(0)),
@@ -72,10 +60,7 @@ const TrendTile = () => {
       },
       {
         title: 'Distance (KM)',
-        data: cube.map(row => ({
-          month: row[0].qText,
-          value: row[4].qNum.toFixed(0)
-        })),
+        sparkline: cube.map(row => row[4].qNum),
         primaryKPI: {
           label: '2017 Total',
           value: numberWithCommas(layout.totalKM.toFixed(0)),
@@ -89,25 +74,19 @@ const TrendTile = () => {
       }
     ];
 
-    const handleChange = (event, newValue) => {
-      setChartNum(newValue);
-    };
     return (
-      <TileComponent title="Composition">
-        <div className={styles.trendsContainer}>
-          <div className={styles.tabContainer}>
-            <Tabs value={chartNum} onChange={handleChange}>
-              <Tab label="Carbon Emissions" />
-              <Tab label="Itineraries" />
-              <Tab label="Flights" />
-              <Tab label="Distance" />
-            </Tabs>
-          </div>
-          {
-            <div className={styles.singleTrend}>
-              <BarChart data={trends[chartNum].data} />
+      <TileComponent title="Top Line Metrics">
+        <div className={styles.kpiContainer}>
+          {KPIs.map(kpi => (
+            <div key={kpi.title} className={styles.singleKPI}>
+              <KPIComponent
+                title={kpi.title}
+                primaryKPI={kpi.primaryKPI}
+                secondaryKPI={kpi.secondaryKPI}
+                sparkData={kpi.sparkline}
+              />
             </div>
-          }
+          ))}
         </div>
       </TileComponent>
     );
@@ -116,4 +95,4 @@ const TrendTile = () => {
   return null;
 };
 
-export default TrendTile;
+export default KPITile;

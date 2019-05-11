@@ -13,12 +13,13 @@ const filters = [
 const filters2 = [
   { display: 'Class', field: 'Class' },
   { display: 'TPO', field: '[Travel Processing Office]' },
-  { display: 'Traveler Type', field: '[Traveler Type]' },
+  { display: 'Travler Type', field: '[Traveler Type]' },
   { display: 'Persnl Subarea', field: '[Personnel Subarea]' },
   { display: 'Travel Type', field: '[Travel Type]' },
   { display: 'Travel Category', field: '[Travel Category]' },
   { display: 'Origin City', field: '[Origin.City]' },
-  { display: 'Destination City', field: '[Destination.City]' }
+  { display: 'Dest. City', field: '[Destination.City]' },
+  { display: 'Itinerary Num', field: '[%UN Travel Row ID]' }
 ];
 
 const FilterRowContainer = () => {

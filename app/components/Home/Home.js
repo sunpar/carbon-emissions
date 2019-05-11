@@ -11,6 +11,7 @@ import FilterRowComponent from './filter-row/filterRow';
 
 import MapPage from '../../containers/MapPage';
 import MainPage from '../../containers/MainPage';
+import AnalysisPage from '../../containers/AnalysisPage';
 
 type Props = {};
 
@@ -29,6 +30,7 @@ export default class Home extends Component<Props> {
           <div className={styles.mainContainer}>
             <Switch>
               <Route path={routes.MAIN} component={MainPage} />
+              <Route path={routes.ANALYSIS} component={AnalysisPage} />
               <Route path={routes.MAP} component={MapPage} />
             </Switch>
           </div>
