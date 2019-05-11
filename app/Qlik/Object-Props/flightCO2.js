@@ -146,7 +146,7 @@ const itinHistogramProps = {
         qLibraryId: null
       }
     ],
-    qInterColumnSortOrder: [0, 1, 2],
+    qInterColumnSortOrder: [8, 9, 10],
     qSuppressZero: false,
     qSuppressMissing: false,
     qMode: 'S'
