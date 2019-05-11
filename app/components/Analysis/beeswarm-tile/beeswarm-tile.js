@@ -1,7 +1,9 @@
-import React, { useContext, useState } from 'react';
+import React, { useRef, useContext, useState, useEffect } from 'react';
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
+
+import { ApplyPatches } from 'rxq/GenericObject';
 
 import useObjectData from '../../../Qlik/Hooks/useObjectData';
 import qlikContext from '../../../Context/qlikContext';
@@ -22,7 +24,48 @@ const BeeSwarmTile = () => {
   const [chartNum, setChartNum] = useState(0);
   const [valueNum, setValueNum] = useState(0);
   const [colorNum, setColorNum] = useState(1);
+  const isFirstRun = useRef(true);
 
+  useEffect(
+    () => {
+      if (handle && isFirstRun.current) {
+        isFirstRun.current = false;
+      }
+      if (handle && !isFirstRun.current) {
+        let newDim = '=1';
+        switch (chartNum) {
+          case 0:
+            newDim = '=1';
+            break;
+          case 1:
+            newDim = '[Class]';
+            break;
+          case 2:
+            newDim = '[Traveler Type]';
+            break;
+          case 3:
+            newDim = '[Travel Category]';
+            break;
+          case 4:
+            newDim = '[TPO]';
+            break;
+        }
+        console.log('patching', newDim);
+        const sub = handle
+          .ask(ApplyPatches, [
+            {
+              qOp: 'replace',
+              qPath: '/qHyperCubeDef/qDimensions/0/qDef/qFieldDefs/0',
+              qValue: JSON.stringify(newDim)
+            }
+          ])
+          .subscribe();
+        return () => sub.unsubscribe();
+      }
+    },
+    [chartNum, handle]
+  );
+  console.log(data);
   if (!loading && data) {
     const formatData = data
       .map(row => ({
@@ -42,7 +85,7 @@ const BeeSwarmTile = () => {
       }))
       .filter(row => row.value > 0)
       .slice(0, 1000);
-      
+
     const handleChange = name => event => {
       if (event.target.checked) {
         setValueNum(1);
@@ -51,15 +94,20 @@ const BeeSwarmTile = () => {
       }
     };
 
+    const handleChangeTab = (event, newValue) => {
+      setChartNum(newValue);
+    };
+
     return (
       <TileComponent title="Distribution">
         <div className={styles.trendsContainer}>
           <div className={styles.tabContainer}>
-            <Tabs value={chartNum} onChange={handleChange}>
+            <Tabs value={chartNum} onChange={handleChangeTab}>
               <Tab label="Itineraries" />
               <Tab label="Class" />
-              <Tab label="Travel Type" />
+              <Tab label="Traveler Type" />
               <Tab label="Travel Category" />
+              <Tab label="TPO" />
             </Tabs>
           </div>
           <div className={styles.chartContainer}>
