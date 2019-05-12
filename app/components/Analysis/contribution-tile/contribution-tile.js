@@ -15,16 +15,30 @@ import styles from './contribution-tile.css';
 const ContributionTile = () => {
   const { app$ } = useContext(qlikContext);
   const { data } = useObjectData(contributionObj, app$);
+  const [chartNum, setChartNum] = useState(0);
+
+  const handleChangeTab = (event, newValue) => {
+    setChartNum(newValue);
+  };
+
   if (data) {
     console.log(data);
     const formattedData = data.map(row => ({
       x: row[0].qText,
       y: row[1].qText,
-      value: row[2].qNum.toFixed(0)
+      value: row[chartNum + 2].qNum.toFixed(0)
     }));
 
     return (
       <TileComponent title="Contribution">
+        <div className={styles.tabContainer}>
+          <Tabs value={chartNum} onChange={handleChangeTab}>
+            <Tab label="Itineraries" />
+            <Tab label="Carbon Emissions (kg)" />
+            <Tab label="# Flights" />
+            <Tab label="Distance (km)" />
+          </Tabs>
+        </div>
         <div className={styles.trendsContainer}>
           <MariMekko data={formattedData} />
         </div>

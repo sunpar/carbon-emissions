@@ -49,31 +49,21 @@ const itinHistogramProps = {
       },
       {
         qDef: {
-          qDef:
-            '=Sum([CO2 After Offsetting (kg)])/Sum(TOTAL [CO2 After Offsetting (kg)])',
+          qDef: '=Sum([CO2 After Offsetting (kg)])',
           qLabel: 'Carbon %'
         },
         qLibraryId: null
       },
       {
         qDef: {
-          qDef:
-            '=Count(Distinct [%UN Travel Row ID])/Count(Distinct TOTAL [%UN Travel Row ID])',
-          qLabel: 'Itinerary %'
-        },
-        qLibraryId: null
-      },
-      {
-        qDef: {
-          qDef:
-            '=Count( Distinct %Legs_RowID)/Count(TOTAL Distinct %Legs_RowID)',
+          qDef: '=Count( Distinct %Legs_RowID)',
           qLabel: 'Flights %'
         },
         qLibraryId: null
       },
       {
         qDef: {
-          qDef: '=Sum([Trip Distance (km)])/Sum(TOTAL [Trip Distance (km)])',
+          qDef: '=Sum([Trip Distance (km)])',
           qLabel: 'Distance %'
         },
         qLibraryId: null
