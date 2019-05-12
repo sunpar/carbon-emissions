@@ -5,11 +5,25 @@ const itinHistogramProps = {
   qHyperCubeDef: {
     qInitialDataFetch: [
       {
-        qHeight: 5000,
-        qWidth: 2
+        qHeight: 2000,
+        qWidth: 5
       }
     ],
     qDimensions: [
+      {
+        qDef: {
+          qFieldDefs: ['[Travel Processing Office]'],
+          qSortCriterias: [
+            {
+              qSortByNumeric: 1,
+              qSortByAscii: 0,
+              qSortByLoadOrder: 0,
+              qExpression: {}
+            }
+          ]
+        },
+        qNullSuppression: true
+      },
       {
         qDef: {
           qFieldDefs: ['Class'],
@@ -28,14 +42,19 @@ const itinHistogramProps = {
     qMeasures: [
       {
         qDef: {
+          qDef: '=Count(Distinct [%UN Travel Row ID])',
+          qLabel: 'Carbon %'
+        },
+        qLibraryId: null
+      },
+      {
+        qDef: {
           qDef:
             '=Sum([CO2 After Offsetting (kg)])/Sum(TOTAL [CO2 After Offsetting (kg)])',
           qLabel: 'Carbon %'
         },
         qLibraryId: null
-      }
-    ],
-    qMeasures: [
+      },
       {
         qDef: {
           qDef:
@@ -43,9 +62,7 @@ const itinHistogramProps = {
           qLabel: 'Itinerary %'
         },
         qLibraryId: null
-      }
-    ],
-    qMeasures: [
+      },
       {
         qDef: {
           qDef:
@@ -53,9 +70,7 @@ const itinHistogramProps = {
           qLabel: 'Flights %'
         },
         qLibraryId: null
-      }
-    ],
-    qMeasures: [
+      },
       {
         qDef: {
           qDef: '=Sum([Trip Distance (km)])/Sum(TOTAL [Trip Distance (km)])',

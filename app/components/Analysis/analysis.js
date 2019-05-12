@@ -13,7 +13,7 @@ import styles from './analysis.css';
 const AnalysisContent = () => {
   return (
     <div className={styles.mainContainer}>
-      <BeeSwarmTile />
+      {/* <BeeSwarmTile /> */}
       <ContributionTile />
     </div>
   );

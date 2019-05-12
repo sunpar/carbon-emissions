@@ -8,6 +8,7 @@ import qlikContext from '../../../Context/qlikContext';
 import contributionObj from '../../../Qlik/Object-Props/contributionObj';
 import { numberWithCommas } from '../../../utils/numberFunctions';
 import TileComponent from '../tile/tile';
+import MariMekko from '../../Data Viz/Marimekko';
 
 import styles from './contribution-tile.css';
 
@@ -16,20 +17,16 @@ const ContributionTile = () => {
   const { data } = useObjectData(contributionObj, app$);
   if (data) {
     console.log(data);
+    const formattedData = data.map(row => ({
+      x: row[0].qText,
+      y: row[1].qText,
+      value: row[2].qNum.toFixed(0)
+    }));
 
     return (
       <TileComponent title="Contribution">
         <div className={styles.trendsContainer}>
-          <div className={styles.singleTrend}>
-            <div className={styles.chartName}>
-              Carbon (kg) (by # Itineraries)
-            </div>
-          </div>
-          <div className={styles.singleTrend}>
-            <div className={styles.chartName}>
-              Distance (km) (by # Itineraries)
-            </div>
-          </div>
+          <MariMekko data={formattedData} />
         </div>
       </TileComponent>
     );

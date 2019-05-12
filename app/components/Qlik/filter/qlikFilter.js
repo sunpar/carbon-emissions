@@ -7,7 +7,11 @@ import React, {
 } from 'react';
 import PropTypes from 'prop-types';
 
-import { SelectListObjectValues, ClearSelections } from 'rxq/GenericObject';
+import {
+  SelectListObjectValues,
+  ClearSelections,
+  SelectListObjectExcluded
+} from 'rxq/GenericObject';
 import { map, filter, debounceTime, switchMap } from 'rxjs/operators';
 import { fromEvent } from 'rxjs';
 
@@ -65,14 +69,18 @@ const QlikFilterComponent = ({
             switchMap(qno => {
               if (qno === -10) {
                 return LB_Handle.ask(ClearSelections, '/qListObjectDef');
-              } else {
+              } else if (qno === -11) {
                 return LB_Handle.ask(
-                  SelectListObjectValues,
-                  '/qListObjectDef',
-                  [qno],
-                  true
+                  SelectListObjectExcluded,
+                  '/qListObjectDef'
                 );
               }
+              return LB_Handle.ask(
+                SelectListObjectValues,
+                '/qListObjectDef',
+                [qno],
+                true
+              );
             })
           )
           .subscribe();
@@ -158,6 +166,9 @@ const QlikFilterComponent = ({
             <div className={styles.listContainer}>
               <div className={styles.clearText} data-qno={-10}>
                 Clear Selections
+              </div>
+              <div className={styles.clearText} data-qno={-11}>
+                Select Excluded
               </div>
               <ul className={styles.list}>
                 {values.map(item => {
