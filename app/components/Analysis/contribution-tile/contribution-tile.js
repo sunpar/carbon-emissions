@@ -45,7 +45,6 @@ const ContributionTile = () => {
             newDim = '[Travel Processing Office]';
             break;
         }
-        console.log('patching', newDim);
         const sub = handle
           .ask(ApplyPatches, [
             {
@@ -62,7 +61,6 @@ const ContributionTile = () => {
   );
 
   if (data) {
-    console.log(data);
     const formattedData1 = data.map(row => ({
       x: row[0].qText,
       y: row[1].qText,

@@ -69,7 +69,7 @@ const itinHistogramProps = {
         qLibraryId: null
       }
     ],
-    qInterColumnSortOrder: [0, 1],
+    qInterColumnSortOrder: [1, 2, 0],
     qSuppressZero: false,
     qSuppressMissing: false,
     qMode: 'S'

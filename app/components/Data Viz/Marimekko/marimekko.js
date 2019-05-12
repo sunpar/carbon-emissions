@@ -3,7 +3,7 @@ import * as d3 from 'd3';
 import styles from './marimekko.css';
 
 const svgStyle = <style>{``}</style>;
-const MariMekko = ({ data, extent }) => {
+const MariMekko = ({ data }) => {
   const chartContainer = useRef(null);
 
   // config
@@ -17,7 +17,6 @@ const MariMekko = ({ data, extent }) => {
       if (chartContainer.current) {
         const width = chartContainer.current.clientWidth,
           height = chartContainer.current.clientHeight;
-        console.log(width, height, data);
         const color = d3
           .scaleOrdinal(d3.schemeCategory10)
           .domain(data.map(d => d.y));
