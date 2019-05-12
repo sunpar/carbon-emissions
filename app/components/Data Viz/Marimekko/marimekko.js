@@ -71,14 +71,24 @@ const MariMekko = ({ data }) => {
           .attr('x', 3)
           .attr('y', '-1.7em')
           .style('font-weight', 'bold')
-          .text(d => d.data.key);
+          .text(d => {
+            if (d.x1 - d.x0 - 1 > 25) {
+              return d.data.key;
+            }
+            return '';
+          });
 
         column
           .append('text')
           .attr('x', 3)
           .attr('y', '-0.5em')
           .attr('fill-opacity', 0.7)
-          .text(d => format(d.value));
+          .text(d => {
+            if (d.x1 - d.x0 - 1 > 25) {
+              return format(d.value);
+            }
+            return '';
+          });
 
         column
           .append('line')
@@ -101,14 +111,31 @@ const MariMekko = ({ data }) => {
           .append('text')
           .attr('x', 3)
           .attr('y', '1.1em')
-          .text(d => d.data.key);
+          .text(d => {
+            if (d.x1 - d.x0 - 1 > 25) {
+              return d.data.key;
+            }
+            return '';
+          });
 
         cell
           .append('text')
           .attr('x', 3)
           .attr('y', '2.3em')
           .attr('fill-opacity', 0.7)
-          .text(d => format(d.value));
+          .text(d => {
+            if (d.x1 - d.x0 - 1 > 25) {
+              return format(d.value);
+            }
+            return '';
+          });
+
+        cell.append('title').text(d => {
+          let tooltip = '';
+          tooltip += d.parent.data.key + ': ' + format(d.parent.value) + '\n';
+          tooltip += d.data.key + ': ' + format(d.value) + '\n';
+          return tooltip;
+        });
 
         svg.node();
 

@@ -24,7 +24,7 @@ const SideBar = ({ history }) => {
   ];
 
   // Which icon is active?
-  let [activeIcon, setActiveIcon] = useState(1);
+  let [activeIcon, setActiveIcon] = useState(2);
 
   useEffect(
     () => {
