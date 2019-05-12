@@ -32,11 +32,11 @@ opacity: 1;
 `}
   </style>
 );
-const BeeSwarm = ({ data }) => {
+const BeeSwarm = ({ data, extent }) => {
   const chartContainer = useRef(null);
 
   // config
-  const MARGIN = { top: 20, right: 10, bottom: 30, left: 10 };
+  const MARGIN = { top: 10, right: 10, bottom: 20, left: 10 };
   const PADDING = 0;
   const RADIUS = 4;
   const formatValue = d3.format(',d');
@@ -56,7 +56,7 @@ const BeeSwarm = ({ data }) => {
             'translate(' + MARGIN.left + ',' + MARGIN.top + ')'
           );
 
-        x.domain(d3.extent(data, d => d.value));
+        x.domain(extent ? extent : d3.extent(data, d => d.value));
         const simulation = d3
           .forceSimulation(data)
           .force(
@@ -71,7 +71,7 @@ const BeeSwarm = ({ data }) => {
           .force('collide', d3.forceCollide(2))
           .stop();
 
-        for (var i = 0; i < 120; ++i) simulation.tick();
+        for (var i = 0; i < 180; ++i) simulation.tick();
 
         g.append('g')
           .attr('class', 'axis axis--x')

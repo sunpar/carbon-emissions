@@ -110,6 +110,12 @@ const BeeSwarmTile = () => {
     const nestedData = group(getRandom(flatData, 7000), d => d[property]);
     const chartData = transformIntoChartData(nestedData, valueNum, colorNum);
 
+    // find extent of data
+    const filteredData = [
+      ...chartData.map(row => row[1].map(item => item.value))
+    ].reduce((acc, val) => acc.concat(val), []);
+    const extent = d3.extent(filteredData);
+
     const handleChange = name => event => {
       if (event.target.checked) {
         setValueNum(1);
@@ -178,7 +184,7 @@ const BeeSwarmTile = () => {
               return (
                 <div key={chart[0]}>
                   <div className={styles.chartTitle}>Dim Value: {chart[0]}</div>
-                  <Beeswarm data={chart[1]} />
+                  <Beeswarm data={chart[1]} extent={extent} />
                 </div>
               );
             })}
