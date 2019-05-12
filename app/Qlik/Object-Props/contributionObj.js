@@ -12,7 +12,7 @@ const itinHistogramProps = {
     qDimensions: [
       {
         qDef: {
-          qFieldDefs: ['[Travel Processing Office]'],
+          qFieldDefs: ['[Traveler Type]'],
           qSortCriterias: [
             {
               qSortByNumeric: 1,

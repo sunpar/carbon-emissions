@@ -9,12 +9,20 @@
   width: 100%;
 }
 
-.chartName {
+.singleTrend:first-child {
+  margin-right: 20px;
+}
+
+.singleTrend:nth-child(2) {
+  margin-left: 20px;
+}
+
+.chartTitle {
   font-size: 14px;
   font-weight: 500;
   color: #4a4a4a;
   text-transform: uppercase;
-  margin-bottom: 7px;
+  margin-bottom: 20px;
   text-decoration: underline;
 }
 
