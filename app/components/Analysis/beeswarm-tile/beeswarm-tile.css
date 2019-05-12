@@ -19,3 +19,9 @@
   font-size: 12px;
   margin: auto 10px;
 }
+
+.chartTitle {
+  font-size: 14px;
+  margin: 10px 0;
+  text-decoration: underline;
+}

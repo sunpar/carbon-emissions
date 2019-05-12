@@ -2,7 +2,8 @@ import React, { useRef, useContext, useState, useEffect } from 'react';
 
 import Tabs from '@material-ui/core/Tabs';
 import Tab from '@material-ui/core/Tab';
-
+import * as d3 from 'd3';
+import { group } from 'd3-array';
 import { ApplyPatches } from 'rxq/GenericObject';
 
 import useObjectData from '../../../Qlik/Hooks/useObjectData';
@@ -18,73 +19,96 @@ import Button from '@material-ui/core/Button';
 
 import styles from './beeswarm-tile.css';
 
+const getRandom = (arr, n) => {
+  if (arr.length <= n) {
+    return arr;
+  }
+  var result = new Array(n),
+    len = arr.length,
+    taken = new Array(len);
+  if (n > len)
+    throw new RangeError('getRandom: more elements taken than available');
+  while (n--) {
+    var x = Math.floor(Math.random() * len);
+    result[n] = arr[x in taken ? taken[x] : x];
+    taken[x] = --len in taken ? taken[len] : len;
+  }
+  return result;
+};
+
+const formatData = (data, valueNum, colorNum) => {
+  return data
+    .map(row => ({
+      tooltips: [
+        { label: 'Itinerary', value: row.Itinerary },
+        { label: 'Departure Date', value: row.DeptDate },
+        { label: 'Travel Class', value: row.Class },
+        { label: 'Travel Category', value: row.Category },
+        { label: 'Travel Type', value: row.Type },
+        { label: 'Traveler Type', value: row.PersonType },
+        { label: 'Carbon (kg)', value: row.Carbon },
+        { label: 'Distance (km)', value: row.Distance },
+        { label: '# Flights', value: row.Flights }
+      ],
+      value: valueNum === 0 ? row.Carbon : row.Distance,
+      colorValue:
+        colorNum === 0
+          ? row.Carbon
+          : colorNum === 1
+          ? row.Distance
+          : row.Flights
+    }))
+    .filter(row => row.value > 0);
+};
+
+const transformIntoChartData = (mappedData, valueNum, colorNum) => {
+  const array = Array.from(mappedData).map(row => [
+    row[0],
+    formatData(row[1], valueNum, colorNum)
+  ]);
+  return array;
+};
+
 const BeeSwarmTile = () => {
   const { app$ } = useContext(qlikContext);
   const { handle, data, loading } = useObjectData(flightCO2, app$);
-  const [chartNum, setChartNum] = useState(0);
+  const [chartNum, setChartNum] = useState(1);
   const [valueNum, setValueNum] = useState(0);
   const [colorNum, setColorNum] = useState(1);
   const isFirstRun = useRef(true);
 
-  useEffect(
-    () => {
-      if (handle && isFirstRun.current) {
-        isFirstRun.current = false;
-      }
-      if (handle && !isFirstRun.current) {
-        let newDim = '=1';
-        switch (chartNum) {
-          case 0:
-            newDim = '=1';
-            break;
-          case 1:
-            newDim = '[Class]';
-            break;
-          case 2:
-            newDim = '[Traveler Type]';
-            break;
-          case 3:
-            newDim = '[Travel Category]';
-            break;
-          case 4:
-            newDim = '[TPO]';
-            break;
-        }
-        console.log('patching', newDim);
-        const sub = handle
-          .ask(ApplyPatches, [
-            {
-              qOp: 'replace',
-              qPath: '/qHyperCubeDef/qDimensions/0/qDef/qFieldDefs/0',
-              qValue: JSON.stringify(newDim)
-            }
-          ])
-          .subscribe();
-        return () => sub.unsubscribe();
-      }
-    },
-    [chartNum, handle]
-  );
-  console.log(data);
   if (!loading && data) {
-    const formatData = data
-      .map(row => ({
-        tooltips: [
-          { label: 'Itinerary', value: row[2].qText },
-          { label: 'Departure Date', value: row[3].qText },
-          { label: 'Travel Class', value: row[4].qText },
-          { label: 'Travel Category', value: row[5].qText },
-          { label: 'Travel Type', value: row[6].qText },
-          { label: 'Traveler Type', value: row[7].qText },
-          { label: 'Carbon (kg)', value: row[8].qNum },
-          { label: 'Distance (km)', value: row[9].qNum },
-          { label: '# Flights', value: row[10].qNum }
-        ],
-        value: [row[8].qNum, row[9].qNum][valueNum],
-        colorValue: [row[8].qNum, row[9].qNum, row[10].qNum][colorNum]
-      }))
-      .filter(row => row.value > 0)
-      .slice(0, 1000);
+    const flatData = data.map((row, i) => {
+      return {
+        key: 'All',
+        Itinerary: row[2].qText,
+        DeptDate: row[3].qText,
+        Class: row[4].qText,
+        Category: row[5].qText,
+        Type: row[6].qText,
+        PersonType: row[7].qText,
+        Carbon: row[8].qNum,
+        Distance: row[9].qNum,
+        Flights: row[10].qNum
+      };
+    });
+    let property = 'key';
+    switch (chartNum) {
+      case 0:
+        property = 'key';
+        break;
+      case 1:
+        property = 'Class';
+        break;
+      case 2:
+        property = 'PersonType';
+        break;
+      case 3:
+        property = 'Category';
+        break;
+    }
+    const nestedData = group(getRandom(flatData, 7000), d => d[property]);
+    const chartData = transformIntoChartData(nestedData, valueNum, colorNum);
 
     const handleChange = name => event => {
       if (event.target.checked) {
@@ -107,7 +131,6 @@ const BeeSwarmTile = () => {
               <Tab label="Class" />
               <Tab label="Traveler Type" />
               <Tab label="Travel Category" />
-              <Tab label="TPO" />
             </Tabs>
           </div>
           <div className={styles.chartContainer}>
@@ -151,7 +174,15 @@ const BeeSwarmTile = () => {
                 }
               />
             </FormGroup>
-            <Beeswarm data={formatData} />
+            {chartData.map(chart => {
+              return (
+                <div key={chart[0]}>
+                  <div className={styles.chartTitle}>Dim Value: {chart[0]}</div>
+                  <Beeswarm data={chart[1]} />
+                </div>
+              );
+            })}
+            {/* <Beeswarm data={chartData} /> */}
           </div>
         </div>
       </TileComponent>

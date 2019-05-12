@@ -1,5 +1,4 @@
 import React, { useRef, useLayoutEffect, useState, useContext } from 'react';
-import * as d3 from 'd3';
 import * as vega from 'vega';
 
 import { GetField } from 'rxq/Doc';

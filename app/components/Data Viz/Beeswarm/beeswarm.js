@@ -71,7 +71,7 @@ const BeeSwarm = ({ data }) => {
           .force('collide', d3.forceCollide(2))
           .stop();
 
-        for (var i = 0; i < 60; ++i) simulation.tick();
+        for (var i = 0; i < 120; ++i) simulation.tick();
 
         g.append('g')
           .attr('class', 'axis axis--x')
