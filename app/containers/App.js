@@ -1,5 +1,6 @@
 // @flow
 import * as React from 'react';
+import 'mapbox-gl/dist/mapbox-gl.css';
 
 type Props = {
   children: React.Node

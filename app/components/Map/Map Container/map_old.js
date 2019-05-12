@@ -1,9 +1,9 @@
 import React, { useRef, useState, useLayoutEffect, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
 
-import airportGEOProps from '../../Qlik/Object-Props/AirportGEOJson';
-import useGenericObjectData from '../../Qlik/Hooks/useGenericObjectData';
-import qlikContext from '../../Context/qlikContext';
+import airportGEOProps from '../../../Qlik/Object-Props/AirportGEOJson';
+import useObjectData from '../../../Qlik/Hooks/useObjectData';
+import qlikContext from '../../../Context/qlikContext';
 
 import configurePointLayer from './configurePointLayer';
 
@@ -39,12 +39,11 @@ const Map = ({ classes }) => {
   );
 
   //   // get the airport coords & plot them
-  const { layout } = useGenericObjectData(airportGEOProps, app$);
-
+  const { data: objData } = useObjectData(airportGEOProps, app$);
   useLayoutEffect(
     () => {
-      if (layout && map) {
-        const data = layout.qHyperCube.qDataPages[0].qMatrix.map(row => ({
+      if (objData && map) {
+        const data = objData.map(row => ({
           type: 'Feature',
           geometry: {
             type: 'Point',
@@ -101,7 +100,7 @@ const Map = ({ classes }) => {
       }
       return;
     },
-    [layout, map]
+    [objData, map]
   );
 
   return <div className={styles.mapContainer} ref={mapEl} />;
