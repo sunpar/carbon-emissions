@@ -50,6 +50,7 @@ const formatData = (data, valueNum, colorNum) => {
         { label: 'Distance (km)', value: row.Distance },
         { label: '# Flights', value: row.Flights }
       ],
+      selectValue: row.ItinSelect,
       value: valueNum === 0 ? row.Carbon : row.Distance,
       colorValue:
         colorNum === 0
@@ -81,6 +82,7 @@ const BeeSwarmTile = () => {
     const flatData = data.map((row, i) => {
       return {
         key: 'All',
+        ItinSelect: row[1].qText,
         Itinerary: row[2].qText,
         DeptDate: row[3].qText,
         Class: row[4].qText,
@@ -184,11 +186,14 @@ const BeeSwarmTile = () => {
               return (
                 <div key={chart[0]}>
                   <div className={styles.chartTitle}>Dim Value: {chart[0]}</div>
-                  <Beeswarm data={chart[1]} extent={extent} />
+                  <Beeswarm
+                    data={chart[1]}
+                    extent={extent}
+                    selField={'[%UN Travel Row ID]'}
+                  />
                 </div>
               );
             })}
-            {/* <Beeswarm data={chartData} /> */}
           </div>
         </div>
       </TileComponent>

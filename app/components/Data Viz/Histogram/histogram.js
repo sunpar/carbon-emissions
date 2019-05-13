@@ -22,6 +22,7 @@ const Histogram = ({ data, selField }) => {
   );
 
   const select = values => {
+    console.log(values);
     fld$
       .pipe(
         switchMap(h => h.ask(SelectValues, values)),

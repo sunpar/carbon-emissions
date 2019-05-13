@@ -1,6 +1,13 @@
-import React, { useRef, useLayoutEffect, cloneElement } from 'react';
+import React, { useRef, useLayoutEffect, useContext } from 'react';
 import * as d3 from 'd3';
 import styles from './beeswarm.css';
+import useElementSize from '../../../Hooks/useElementSize';
+
+import { GetField } from 'rxq/Doc';
+import { SelectValues } from 'rxq/Field';
+import { switchMap, take, shareReplay } from 'rxjs/operators';
+
+import qlikContext from '../../../Context/qlikContext';
 
 const svgStyle = (
   <style>
@@ -32,7 +39,7 @@ opacity: 1;
 `}
   </style>
 );
-const BeeSwarm = ({ data, extent }) => {
+const BeeSwarm = ({ data, extent, selField }) => {
   const chartContainer = useRef(null);
 
   // config
@@ -40,6 +47,22 @@ const BeeSwarm = ({ data, extent }) => {
   const PADDING = 0;
   const RADIUS = 4;
   const formatValue = d3.format(',d');
+
+  const { app$, session } = useContext(qlikContext);
+
+  const fld$ = app$.pipe(
+    switchMap(h => h.ask(GetField, selField)),
+    shareReplay(1)
+  );
+
+  const select = values => {
+    fld$
+      .pipe(
+        switchMap(h => h.ask(SelectValues, values)),
+        take(1)
+      )
+      .subscribe();
+  };
 
   useLayoutEffect(
     () => {
@@ -109,6 +132,13 @@ const BeeSwarm = ({ data, extent }) => {
           })
           .attr('cy', d => d.data.y)
           .attr('fill', d => colorScale(d.data.colorValue));
+
+        cell.on('click', d =>
+          select([{
+            qNumber: Number.parseInt(d.data.selectValue),
+            qIsNumeric: true
+          }])
+        );
 
         cell.append('path').attr('d', d => 'M' + d.join('L') + 'Z');
 

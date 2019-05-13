@@ -62,7 +62,7 @@ const Map = ({ classes }) => {
           .filter(
             row => row.Distance < kmValue[1] && row.Distance > kmValue[0]
           );
-        console.log(calculatedData);
+        // console.log(calculatedData);
       }
     },
     [flightData, map, kmValue]
@@ -70,7 +70,7 @@ const Map = ({ classes }) => {
   useLayoutEffect(
     () => {
       if (objData && map) {
-        console.log(objData);
+        // console.log(objData);
         const data = objData.map(row => ({
           type: 'Feature',
           geometry: {
