@@ -1,36 +1,119 @@
 import React, { useRef, useState, useLayoutEffect, useContext } from 'react';
 import mapboxgl from 'mapbox-gl';
-import ReactMapGL from 'react-map-gl';
+import { Range } from 'rc-slider';
 
 import airportGEOProps from '../../../Qlik/Object-Props/AirportGEOJson';
+import flightPathing from '../../../Qlik/Object-Props/flightPathing';
 import useObjectData from '../../../Qlik/Hooks/useObjectData';
 import qlikContext from '../../../Context/qlikContext';
-
 import configurePointLayer from './configurePointLayer';
-
 import styles from './map.css';
-
-const TOKEN =
-  'pk.eyJ1Ijoic3VucGFyIiwiYSI6ImNqdWdlN3ZwNDBvMWU0NG1qdjQwcnJ2cjQifQ.q3nY8YdDK_Qk3YwDrLqEbA';
 
 const Map = ({ classes }) => {
   const mapEl = useRef(null);
-  const [viewPort, setViewPort] = useState({
-    width: 1000,
-    height: 1000,
-    center: [5, 34],
-    zoom: 1.5
-  });
+  const [map, setMap] = useState(null);
   const { app$ } = useContext(qlikContext);
-  const { data: objData } = useObjectData(airportGEOProps, app$);
-  return (
-    <ReactMapGL
-      {...viewPort}
-      mapboxApiAccessToken={
-        'pk.eyJ1Ijoic3VucGFyIiwiYSI6ImNqdWdlN3ZwNDBvMWU0NG1qdjQwcnJ2cjQifQ.q3nY8YdDK_Qk3YwDrLqEbA'
+  useLayoutEffect(
+    () => {
+      if (mapEl.current) {
+        // draw the map
+        mapboxgl.accessToken =
+          'pk.eyJ1Ijoic3VucGFyIiwiYSI6ImNqdWdlN3ZwNDBvMWU0NG1qdjQwcnJ2cjQifQ.q3nY8YdDK_Qk3YwDrLqEbA';
+
+        const map = new mapboxgl.Map({
+          container: mapEl.current,
+          style: 'mapbox://styles/mapbox/navigation-guidance-day-v4',
+          center: [5, 34],
+          zoom: 1.5
+        });
+
+        setMap(map);
+
+        return () => {
+          map.remove();
+        };
       }
-      onViewportChange={viewport => setViewPort(viewPort)}
-    />
+      return;
+    },
+    [mapEl.current]
+  );
+
+  // get the airport coords & plot them
+  const { data: objData } = useObjectData(airportGEOProps, app$);
+  const { data: flightData } = useObjectData(flightPathing, app$);
+  console.log(flightData);
+  useLayoutEffect(
+    () => {
+      if (objData && flightData && map) {
+
+        const data = objData.map(row => ({
+          type: 'Feature',
+          geometry: {
+            type: 'Point',
+            coordinates: JSON.parse(row[1].qText)
+          },
+          properties: {
+            airportName: row[0].qText,
+            flights: row[2].qNum,
+            co2perFlight: parseInt(row[3].qNum.toFixed(0))
+          }
+        }));
+        const source = {
+          type: 'geojson',
+          data: {
+            type: 'FeatureCollection',
+            features: data
+          }
+        };
+        const mapSource = map.getSource('airportsGeo');
+        if (mapSource) {
+          mapSource.setData(source.data);
+        } else {
+          map.on('load', () => {
+            map.addSource('airportsGeo', source);
+            map.addLayer({
+              id: 'airportPoints',
+              type: 'circle',
+              source: 'airportsGeo',
+              paint: {
+                'circle-color': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', 'co2perFlight'],
+                  0,
+                  '#44c8a7',
+                  2000,
+                  '#7F3121'
+                ],
+                'circle-opacity': 0.75,
+                'circle-radius': [
+                  'interpolate',
+                  ['linear'],
+                  ['get', 'flights'],
+                  0,
+                  4,
+                  10000,
+                  10
+                ]
+              }
+            });
+            configurePointLayer(map);
+          });
+        }
+      }
+      return;
+    },
+    [objData, flightData, map]
+  );
+
+  return (
+    <div className={styles.mapContainer} ref={mapEl}>
+      <div className={styles.mapControls}>
+        <div className={styles.range}>
+          <Range min={0} max={20} defaultValue={[3, 10]} />
+        </div>
+      </div>
+    </div>
   );
 };
 

@@ -2,3 +2,13 @@
   width: 100%;
   height: 1000px;
 }
+
+.pageContainer {
+  width: 100%;
+  height: 100%;
+}
+
+.mapControls {
+  padding: 5px;
+  margin: 20px 0;
+}

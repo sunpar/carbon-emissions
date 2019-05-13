@@ -2,3 +2,11 @@
   width: 100%;
   height: 1000px;
 }
+
+.mapControls {
+  padding: 15px;
+}
+
+.range {
+  width: 25%;
+}

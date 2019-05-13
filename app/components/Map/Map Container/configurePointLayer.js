@@ -1,13 +1,16 @@
-import mapboxgl from "mapbox-gl";
+import mapboxgl from 'mapbox-gl';
+import { numberWithCommas } from '../../../utils/numberFunctions';
 
 const configurePointLayer = map => {
   // When a click event occurs on a feature in the places layer, open a popup at the
   // location of the feature, with description HTML from its properties.
-  map.on("click", "airportPoints", e => {
+  map.on('click', 'airportPoints', e => {
     var coordinates = e.features[0].geometry.coordinates.slice();
-    var description = `<strong>${
+    var description = `<h3>${
       e.features[0].properties.airportName
-    }</strong><br>#Flights: ${e.features[0].properties.flights}<br> CO2/Flight: ${e.features[0].properties.co2perFlight}`;
+    }</h3><h4>#Flights: ${numberWithCommas(
+      e.features[0].properties.flights
+    )}<br>CO2/Flight: ${numberWithCommas(e.features[0].properties.co2perFlight)}</h4>`;
 
     // Ensure that if the map is zoomed out such that multiple
     // copies of the feature are visible, the popup appears
@@ -23,12 +26,12 @@ const configurePointLayer = map => {
   });
 
   // Change the cursor to a pointer when the mouse is over the airport layer.
-  map.on("mouseenter", "airportPoints", () => {
-    map.getCanvas().style.cursor = "pointer";
+  map.on('mouseenter', 'airportPoints', () => {
+    map.getCanvas().style.cursor = 'pointer';
   });
   // Change it back to a pointer when it leaves.
-  map.on("mouseleave", "airportPoints", () => {
-    map.getCanvas().style.cursor = "";
+  map.on('mouseleave', 'airportPoints', () => {
+    map.getCanvas().style.cursor = '';
   });
 };
 
