@@ -8,10 +8,12 @@ import useObjectData from '../../../Qlik/Hooks/useObjectData';
 import qlikContext from '../../../Context/qlikContext';
 import configurePointLayer from './configurePointLayer';
 import styles from './map.css';
+import * as turf from '@turf/turf';
 
 const Map = ({ classes }) => {
   const mapEl = useRef(null);
   const [map, setMap] = useState(null);
+  const [kmValue, setKMValue] = useState([0, 1000]);
   const { app$ } = useContext(qlikContext);
   useLayoutEffect(
     () => {
@@ -23,7 +25,7 @@ const Map = ({ classes }) => {
         const map = new mapboxgl.Map({
           container: mapEl.current,
           style: 'mapbox://styles/mapbox/navigation-guidance-day-v4',
-          center: [5, 34],
+          center: [20, 0],
           zoom: 1.5
         });
 
@@ -41,11 +43,34 @@ const Map = ({ classes }) => {
   // get the airport coords & plot them
   const { data: objData } = useObjectData(airportGEOProps, app$);
   const { data: flightData } = useObjectData(flightPathing, app$);
-  console.log(flightData);
   useLayoutEffect(
     () => {
-      if (objData && flightData && map) {
-
+      if (flightData && map) {
+        const calculatedData = flightData
+          .map(row => {
+            const from = turf.point(JSON.parse(row[2].qText));
+            const to = turf.point(JSON.parse(row[4].qText));
+            const distance = turf.distance(from, to);
+            return {
+              Origin: row[1].qText,
+              OriginJSON: JSON.parse(row[2].qText),
+              Destination: row[3].qText,
+              DestinationJSON: JSON.parse(row[4].qText),
+              Distance: distance.toFixed(0)
+            };
+          })
+          .filter(
+            row => row.Distance < kmValue[1] && row.Distance > kmValue[0]
+          );
+        console.log(calculatedData);
+      }
+    },
+    [flightData, map, kmValue]
+  );
+  useLayoutEffect(
+    () => {
+      if (objData && map) {
+        console.log(objData);
         const data = objData.map(row => ({
           type: 'Feature',
           geometry: {
@@ -103,14 +128,27 @@ const Map = ({ classes }) => {
       }
       return;
     },
-    [objData, flightData, map]
+    [objData, map]
   );
+
+  const handleSlider = value => {
+    setKMValue(value);
+  };
 
   return (
     <div className={styles.mapContainer} ref={mapEl}>
       <div className={styles.mapControls}>
         <div className={styles.range}>
-          <Range min={0} max={20} defaultValue={[3, 10]} />
+          <Range
+            min={0}
+            max={17500}
+            defaultValue={[0, 1000]}
+            step={50}
+            onChange={handleSlider}
+          />
+        </div>
+        <div ClassName={styles.rangeLabel}>
+          Range: {kmValue[0]}km to {kmValue[1]}km
         </div>
       </div>
     </div>

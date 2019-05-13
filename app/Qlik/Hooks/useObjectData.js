@@ -41,12 +41,6 @@ const useGenericObjectData = (
     const objLayout$ = app$.pipe(
       qAsk(CreateSessionObject, objProps),
       invalidations(true),
-      tap(handle =>
-        dispatch({
-          type: "SET_NEW_STATE",
-          payload: { handle, loading: true }
-        })
-      ),
       switchMap(
         handle => handle.ask(GetLayout).pipe(retry(3)),
         (handle, layout) => [handle, layout]
