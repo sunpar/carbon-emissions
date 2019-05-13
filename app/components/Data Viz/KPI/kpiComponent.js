@@ -4,11 +4,17 @@ import SparkLine from '../Sparkline';
 import styles from './kpiComponent.css';
 import useElementSize from '../../../Hooks/useElementSize';
 
-const KPIComponent = ({ title, primaryKPI, secondaryKPI, sparkData }) => {
+const KPIComponent = ({
+  title,
+  primaryKPI,
+  secondaryKPI,
+  thirdKPI,
+  sparkData
+}) => {
   const chartDiv = useRef(null);
   const { width } = useElementSize(chartDiv);
   const percent = secondaryKPI.number / primaryKPI.number;
-
+  console.log(thirdKPI);
   return (
     <div className={styles.kpiContainer}>
       <div className={styles.kpiTitle}>{title}</div>
@@ -36,6 +42,16 @@ const KPIComponent = ({ title, primaryKPI, secondaryKPI, sparkData }) => {
         ) : (
           <SparkLine data={sparkData} />
         )}
+        <table className={styles.kpi}>
+          <tbody>
+            {thirdKPI ? (
+              <tr>
+                <td className={styles.KPILabel}>{thirdKPI.label}</td>
+                <td className={styles.KPIValue}>{thirdKPI.value}</td>
+              </tr>
+            ) : null}
+          </tbody>
+        </table>
       </div>
     </div>
   );

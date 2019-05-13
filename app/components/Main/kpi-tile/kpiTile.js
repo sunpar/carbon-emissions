@@ -28,6 +28,11 @@ const KPITile = () => {
           label: 'Selection',
           value: numberWithCommas(layout.currentCarbon.toFixed(0)),
           number: layout.currentCarbon
+        },
+        thirdKPI: {
+          label: '# of Americans',
+          value: numberWithCommas((layout.currentCarbon / 16400).toFixed(0)),
+          number: layout.currentCarbon / 16400
         }
       },
       {
@@ -77,16 +82,19 @@ const KPITile = () => {
     return (
       <TileComponent title="Top Line Metrics">
         <div className={styles.kpiContainer}>
-          {KPIs.map(kpi => (
-            <div key={kpi.title} className={styles.singleKPI}>
-              <KPIComponent
-                title={kpi.title}
-                primaryKPI={kpi.primaryKPI}
-                secondaryKPI={kpi.secondaryKPI}
-                sparkData={kpi.sparkline}
-              />
-            </div>
-          ))}
+          {KPIs.map(kpi => {
+            return (
+              <div key={kpi.title} className={styles.singleKPI}>
+                <KPIComponent
+                  title={kpi.title}
+                  primaryKPI={kpi.primaryKPI}
+                  secondaryKPI={kpi.secondaryKPI}
+                  thirdKPI={kpi.thirdKPI}
+                  sparkData={kpi.sparkline}
+                />
+              </div>
+            );
+          })}
         </div>
       </TileComponent>
     );
