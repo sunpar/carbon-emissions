@@ -7,13 +7,18 @@ import flightPathing from '../../../Qlik/Object-Props/flightPathing';
 import useObjectData from '../../../Qlik/Hooks/useObjectData';
 import qlikContext from '../../../Context/qlikContext';
 import configurePointLayer from './configurePointLayer';
+import { numberWithCommas } from '../../../utils/numberFunctions';
+
 import styles from './map.css';
 import * as turf from '@turf/turf';
+
+const obj = ll => ({ y: ll[0], x: ll[1] });
 
 const Map = ({ classes }) => {
   const mapEl = useRef(null);
   const [map, setMap] = useState(null);
   const [kmValue, setKMValue] = useState([0, 1000]);
+  const [numFlights, setNumFlights] = useState(0);
   const { app$ } = useContext(qlikContext);
   useLayoutEffect(
     () => {
@@ -53,16 +58,54 @@ const Map = ({ classes }) => {
             const distance = turf.distance(from, to);
             return {
               Origin: row[1].qText,
-              OriginJSON: JSON.parse(row[2].qText),
+              flightCoords: [
+                JSON.parse(row[2].qText),
+                JSON.parse(row[4].qText)
+              ],
               Destination: row[3].qText,
-              DestinationJSON: JSON.parse(row[4].qText),
               Distance: distance.toFixed(0)
             };
           })
           .filter(
             row => row.Distance < kmValue[1] && row.Distance > kmValue[0]
           );
-        // console.log(calculatedData);
+        const pairs = calculatedData.map(row => row.flightCoords);
+        setNumFlights(pairs.length);
+        const routes = {
+          type: 'FeatureCollection',
+          features: pairs.map(row => {
+            return {
+              type: 'Feature',
+              geometry: {
+                type: 'LineString',
+                coordinates: [row[0], row[1]]
+              }
+            };
+          })
+        };
+        const mapSource = map.getSource('route');
+        if (mapSource) {
+          mapSource.setData(routes);
+        } else {
+          map.on('load', () => {
+            // Add a source and layer displaying a point which will be animated in a circle.
+            map.addSource('route', {
+              type: 'geojson',
+              data: routes
+            });
+
+            map.addLayer({
+              id: 'route',
+              source: 'route',
+              type: 'line',
+              paint: {
+                'line-width': 2,
+                'line-color': '#007cbf',
+                'line-opacity': 0.4
+              }
+            });
+          });
+        }
       }
     },
     [flightData, map, kmValue]
@@ -115,8 +158,8 @@ const Map = ({ classes }) => {
                   'interpolate',
                   ['linear'],
                   ['get', 'flights'],
-                  0,
-                  4,
+                  2,
+                  6,
                   10000,
                   10
                 ]
@@ -147,8 +190,11 @@ const Map = ({ classes }) => {
             onChange={handleSlider}
           />
         </div>
-        <div ClassName={styles.rangeLabel}>
+        <div className={styles.rangeLabel}>
           Range: {kmValue[0]}km to {kmValue[1]}km
+        </div>
+        <div className={styles.rangeLabel}>
+          # Flights: {numberWithCommas(numFlights)}
         </div>
       </div>
     </div>
