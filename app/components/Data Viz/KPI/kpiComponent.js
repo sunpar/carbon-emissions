@@ -14,7 +14,6 @@ const KPIComponent = ({
   const chartDiv = useRef(null);
   const { width } = useElementSize(chartDiv);
   const percent = secondaryKPI.number / primaryKPI.number;
-  console.log(thirdKPI);
   return (
     <div className={styles.kpiContainer}>
       <div className={styles.kpiTitle}>{title}</div>
